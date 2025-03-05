@@ -1,0 +1,48 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.4.3'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+repositories {
+	mavenCentral()
+	maven {
+		url = uri("https://nexuscentral.runwayci.com/repository/maven-releases/")
+		credentials {
+			username = "xxx"
+			password = "xxx"
+		}
+	}
+}
+
+ext {
+	set('springShellVersion', "3.4.0")
+}
+
+dependencies {
+	implementation 'com.freshworks:freshid-sdk:3.0.8'
+	implementation 'com.google.protobuf:protobuf-java-util:3.25.3'
+	implementation 'org.springframework.shell:spring-shell-starter'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.shell:spring-shell-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.shell:spring-shell-dependencies:${springShellVersion}"
+	}
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
